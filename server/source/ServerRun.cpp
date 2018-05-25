@@ -67,7 +67,8 @@ int FrSDKTest() {
 			AddRandPerson(devs[i].hdev, personA, rand(), 5);
 			AddRandPerson(devs[i].hdev, personB, rand(), 5);
 
-			/*unsigned int* person_ids = NULL;
+
+			unsigned int* person_ids = NULL;
 			int person_cnt;
 			result = FR_GetPersonList(devs[i].hdev, &person_ids, &person_cnt);
 			if (result != 0) {
@@ -75,8 +76,8 @@ int FrSDKTest() {
 			}
 			else {
 				printf("<FR_GetPersonList>[Device=%d],[success]\n", i);
-				for (int z = 0; z < person_cnt; ++i) {
-					printf("\t[PersonId=%d]\n", person_ids[i]);
+				for (int z = 0; z < person_cnt; ++z) {
+					printf("\t[PersonId=%d]\n", person_ids[z]);
 				}
 				FR_FreePersonList(person_ids);
 			}
@@ -89,7 +90,7 @@ int FrSDKTest() {
 			else {
 				printf("<FR_DelPerson>[Device=%d],[success]\n", i);
 			}
-*/
+
 		}
 
 
