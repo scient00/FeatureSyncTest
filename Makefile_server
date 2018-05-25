@@ -1,0 +1,41 @@
+################  COMPILE FLAG ########################
+GXX := g++
+#GXX := icpc
+TARGET = ./run/serverStart
+CPPFLAGS = -Wall -O2 -fPIC -lpthread  -std=c++11 
+
+INCLUDE=-I"./common/include" \
+	-I"./server/include" \
+	-I "/usr/local/dependlib/Opencv-2.4.7/include" \
+	-I "/usr/local/dependlib/Opencv-2.4.7/include/opencv" 
+	-I "/usr/local/dependlib/Opencv-2.4.7/include/opencv2" \
+SOURCE1=./server/source
+SOURCE2=./common/source
+
+LINNAME= -lfrsdk -luv -levent -levent_core -levent_extra -levent_pthreads 
+
+prefix=/usr/local/dependlib/Opencv-2.4.7
+exec_prefix=${prefix}
+OPENCV_SO = ${exec_prefix}/lib/libopencv_contrib.a ${exec_prefix}/lib/libopencv_stitching.a ${exec_prefix}/lib/libopencv_nonfree.a ${exec_prefix}/lib/libopencv_superres.a ${exec_prefix}/lib/libopencv_ocl.a ${exec_prefix}/lib/libopencv_ts.a ${exec_prefix}/lib/libopencv_videostab.a ${exec_prefix}/lib/libopencv_gpu.a ${exec_prefix}/lib/libopencv_photo.a ${exec_prefix}/lib/libopencv_objdetect.a ${exec_prefix}/lib/libopencv_legacy.a ${exec_prefix}/lib/libopencv_video.a ${exec_prefix}/lib/libopencv_ml.a ${exec_prefix}/lib/libopencv_calib3d.a ${exec_prefix}/lib/libopencv_features2d.a ${exec_prefix}/lib/libopencv_highgui.a ${exec_prefix}/share/OpenCV/3rdparty/lib/libIlmImf.a ${exec_prefix}/share/OpenCV/3rdparty/lib/liblibjasper.a ${exec_prefix}/share/OpenCV/3rdparty/lib/liblibtiff.a ${exec_prefix}/share/OpenCV/3rdparty/lib/liblibpng.a ${exec_prefix}/share/OpenCV/3rdparty/lib/liblibjpeg.a ${exec_prefix}/lib/libopencv_imgproc.a ${exec_prefix}/lib/libopencv_flann.a ${exec_prefix}/lib/libopencv_core.a ${exec_prefix}/share/OpenCV/3rdparty/lib/libzlib.a -lswscale -lavutil -lavformat -lavcodec -lgthread-2.0 -lfreetype -lglib-2.0 -lgobject-2.0 -lfontconfig -lpango-1.0 -lcairo -lgdk_pixbuf-2.0 -lpangocairo-1.0 -lpangoft2-1.0 -lgio-2.0 -latk-1.0 -lgdk-x11-2.0 -lgtk-x11-2.0 -lrt -lpthread -lm -ldl -lstdc++
+
+
+LDFLAGS=-L./server/Lib $(LINNAME)  \
+	    -L $(OPENCV_SO) 
+	
+	
+#LDFAGS=-Xlinker"-(" $(LDFLAGS) -Xlinker "-)"
+
+OBJS=$(patsubst %.cpp, %.o, $(wildcard ./server/source/*.cpp )) $(patsubst %.cpp, %.o, $(wildcard ./common/source/*.cpp ))
+
+$(TARGET):$(OBJS)
+	$(GXX) $(CPPFLAGS) -o $@ $(OBJS) $(LDFLAGS)
+
+$(OBJS):%.o:%.cpp
+	$(GXX) $(CPPFLAGS) -c -g -DLINUX $< $(INCLUDE) -o $@
+
+clean:
+	rm -f *.o *.d $(TARGET)
+	rm -f $(SOURCE1)/*.o
+	rm -f $(SOURCE2)/*.o
+
+.PHONY: all clean
